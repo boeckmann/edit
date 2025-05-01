@@ -13,6 +13,7 @@
 #define BELL          7 /* no scancode  */
 #define BS            8 /* scancode: 14 */ /* backspace / rubout */
 #define TAB           9	/* scancode: 15 */
+#define ENTER       '\r'
 #define ESC          27	/* scancode:  1 */
 
 #define F1          (FKEY+0x3b) /* scancode: 0x3b */

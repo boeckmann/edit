@@ -77,7 +77,7 @@ int ButtonProc(WINDOW wnd, MESSAGE msg, PARAM p1, PARAM p2)
 								   PostMessage ( GetParent(wnd), msg, p1, p2);
 								   return TRUE;
 								}
-                if (p1 != '\r')
+                if (p1 != ENTER)
                     break;
                 /* ---- fall through ---- */
             case LEFT_BUTTON:
