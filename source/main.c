@@ -12,11 +12,13 @@ SysConfigType SysConfig = {
 };
 
 
+void get_mouseposition(int *x, int *y);
 
 int main(int argc, char *argv[])
 {
 	
 		int ExitCode=0;
+        int mx, my;
 
 		/* Intro message */
     printf("%s (%i.%i.%i.%i)\n", ProgramModule.Description,ProgramModule.Ver_maj,ProgramModule.Ver_min,ProgramModule.Ver_rel,ProgramModule.Ver_patch);
@@ -75,6 +77,8 @@ int main(int argc, char *argv[])
         return (-1);
     }
   
+    /* initialize mouse */
+    get_mouseposition(&mx, &my);
 
     /* -- Here runs the main application --*/
     
