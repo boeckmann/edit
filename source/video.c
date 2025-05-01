@@ -7,8 +7,8 @@ BOOL ClipString;
 static unsigned video_address;
 static int near vpeek(int far *vp);
 static void near vpoke(int far *vp, int c);
-void movefromscreen(void *bf, int offset, int len);
-void movetoscreen(void *bf, int offset, int len);
+void movefromscreen(void far *bf, int offset, int len);
+void movetoscreen(void far *bf, int offset, int len);
 
 
 VideoResolution  TXT25 = {80, 25, FALSE, "PC Standard 80x25 text mode"};
@@ -305,14 +305,14 @@ static void near waitforretrace(void)
 	enable();
 }
 
-void movetoscreen(void *bf, int offset, int len)
+void movetoscreen(void far *bf, int offset, int len)
 {
 	if (SysConfig.VideoSnowyFlag)
 		waitforretrace();
 	movedata(FP_SEG(bf), FP_OFF(bf), video_address, offset, len);
 }
 
-void movefromscreen(void *bf, int offset, int len)
+void movefromscreen(void far *bf, int offset, int len)
 {
 	if (SysConfig.VideoSnowyFlag)
 		waitforretrace();

@@ -73,7 +73,7 @@ static char timerused[3] = {0, 0, 0}; /* 0 means off, 2 timed out */
 static long unsigned int timerend[3] = {0, 0, 0};
 static long unsigned int timerstart[3] = {0, 0, 0};
 //volatile long unsigned int *biostimer = MK_FP(0x40,0x6c);
-volatile long unsigned int *biostimer = MK_FP(0x40,0x6c);
+volatile long unsigned int far *biostimer = MK_FP(0x40,0x6c);
 			/* just using BIOS DATA "timer tick count" */
 
 #endif
