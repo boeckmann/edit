@@ -1,4 +1,5 @@
 # Watcom Makefile for FreeDOS EDIT
+.erase
 
 CFLAGS=-q -ml
 !ifdef DEBUG
@@ -64,11 +65,13 @@ objs +=	logger.obj
 objs += nolog.obj
 !endif
 	
+all: edit.exe
+
 edit.exe: $(objs) edit.lnk Makefile
 	wlink @edit.lnk
 
 .c.obj:
-	wcc $(CFLAGS)-Fo=$*.obj $*.c
+	wcc $(CFLAGS) -Fo=$*.obj $*.c
 
 edit.lnk : Makefile
 	@echo NAME $^& >$^@
@@ -78,8 +81,6 @@ edit.lnk : Makefile
 	@echo OPTION STACK=8192 >>$^@
 !ifdef DEBUG
 	@echo DEBUG ALL >>$^@
-!else
-	@echo OPTION ELIMINATE >>$^@
 !endif
 	@for %i in ($(objs)) do @echo FILE %i >>$^@
 
