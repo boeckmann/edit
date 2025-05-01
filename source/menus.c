@@ -6,11 +6,11 @@
 
 
 DEFPROGRAM
-  MOD_DESCRIPTION("FreeDOS EDIT 0.9a")
-  MOD_VERSION(0,9,1,0)
-  MOD_COPYRIGHT("    Joe Cosentino, Eric Auer")
+  MOD_DESCRIPTION("FreeDOS EDIT 0.9c")
+  MOD_VERSION(0,9,3,0)
+  MOD_COPYRIGHT("J.Cosentino, E.Auer, B.Boeckmann")
   MOD_LICENSE("GNU GPL 2.0")
-  MOD_ABOUT("FreeDOS Edit is a clone of MS-DOS|editor for the FreeDOS Project")
+  MOD_ABOUT("FreeDOS Edit is the standard text|editor for the FreeDOS Project")
 END_DEFMODULE
 
 
@@ -62,7 +62,7 @@ DEFMENU(MainMenu)
     /* --------------- the Search popdown menu ----------------*/
     POPDOWN( "~Search", PrepSearchMenu, "Search and replace text" )
         SELECTION( "~Find", ID_SEARCH,      CTRL_F,    INACTIVE)
-       			/* *** CTRL_F added 0.7c, see also editbox.c *** */
+                        /* *** CTRL_F added 0.7c, see also editbox.c *** */
         SELECTION( "~Next",      ID_SEARCHNEXT,  F3,   INACTIVE)
         SELECTION( "~Replace",ID_REPLACE,     0,    INACTIVE)
     ENDPOPDOWN
@@ -73,7 +73,7 @@ DEFMENU(MainMenu)
         SELECTION( "~Calendar",   ID_CALENDAR,     0,   0)
 #endif
 #if WITH_ASCIITAB
-        SELECTION( "~ASCII Table",   ID_ASCIITAB,     0,   0)	/* new 0.7c */
+        SELECTION( "~ASCII Table",   ID_ASCIITAB,     0,   0)   /* new 0.7c */
 #endif
     ENDPOPDOWN
 
@@ -122,13 +122,13 @@ DEFMENU(MainMenu)
         SELECTION(  "~About DFlat+...",          ID_ABOUTDFP,     0, 0 )
     ENDPOPDOWN
 
-	/* ----- cascaded pulldown from Tabs... above ----- */
-	CASCADED_POPDOWN( ID_TABS, NULL )
-		SELECTION( "raw tabs ~0", ID_TAB0, 0, 0) /* -ea */
-		SELECTION( "tab size ~2", ID_TAB2, 0, 0)
-		SELECTION( "tab size ~4", ID_TAB4, 0, 0)
-		SELECTION( "tab size ~6", ID_TAB6, 0, 0)
-		SELECTION( "tab size ~8", ID_TAB8, 0, 0)
+        /* ----- cascaded pulldown from Tabs... above ----- */
+        CASCADED_POPDOWN( ID_TABS, NULL )
+                SELECTION( "raw tabs ~0", ID_TAB0, 0, 0) /* -ea */
+                SELECTION( "tab size ~2", ID_TAB2, 0, 0)
+                SELECTION( "tab size ~4", ID_TAB4, 0, 0)
+                SELECTION( "tab size ~6", ID_TAB6, 0, 0)
+                SELECTION( "tab size ~8", ID_TAB8, 0, 0)
     ENDPOPDOWN
 
 ENDMENU
