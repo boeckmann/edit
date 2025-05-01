@@ -380,6 +380,7 @@ static void PostEvent(MESSAGE event, int p1, int p2)
 static void near collect_events(void)
 {
     static int ShiftKeys = 0;
+    static int last_sec = -1;
 	int sk;
     struct tm *now;
 #if BLINKING_CLOCK
@@ -402,21 +403,24 @@ static void near collect_events(void)
 #endif
         /* ----- get the current time ----- */
         now = localtime(&t);
-        hr = now->tm_hour;
-        if (ampmflag && (hr > 12)) hr -= 12;
-        if (ampmflag && (hr == 0)) hr  = 12;
-        if (ampmflag) {
-          sprintf(time_string, "%2d%c%02d%c%02d%s", hr, timesep, now->tm_min,
-            timesep, now->tm_sec,
-            ((now->tm_hour > 11) ? "pm " : "am ") );
-        } else
-          sprintf(time_string, "%2d%c%02d%c%02d  ", hr, timesep, now->tm_min,
-            timesep, now->tm_sec);
-            /* min / sec use 02 digits, only 0.6 had 2 digits ' ' padded hours */
-        /* -------- reset the timer -------- */
-        set_timer(clocktimer, 1);
-        /* -------- post the clock event -------- */
-        PostEvent(CLOCKTICK, FP_SEG(time_string), FP_OFF(time_string));
+        if ( now->tm_sec != last_sec ) {
+            hr = now->tm_hour;
+            if (ampmflag && (hr > 12)) hr -= 12;
+            if (ampmflag && (hr == 0)) hr  = 12;
+            if (ampmflag) {
+              sprintf(time_string, "%2d%c%02d%c%02d%s", hr, timesep, now->tm_min,
+                timesep, now->tm_sec,
+                ((now->tm_hour > 11) ? "pm " : "am ") );
+            } else
+              sprintf(time_string, "%2d%c%02d%c%02d  ", hr, timesep, now->tm_min,
+                timesep, now->tm_sec);
+                /* min / sec use 02 digits, only 0.6 had 2 digits ' ' padded hours */
+            /* -------- reset the timer -------- */
+            /*set_timer(clocktimer, 1);*/
+            /* -------- post the clock event -------- */
+            PostEvent(CLOCKTICK, FP_SEG(time_string), FP_OFF(time_string));
+            last_sec = now->tm_sec;
+        }
 //    }
 
     /* --------- keyboard events ---------- */
