@@ -37,8 +37,8 @@ int YesNoBoxProc(WINDOW wnd, MESSAGE msg, PARAM p1, PARAM p2)
         case KEYBOARD:    {
             int c = tolower((int)p1);
 
-						if ( p1 == LARROW ) p1 = SHIFT_HT;		/* DFlat+ 1.0: for these, arrows are turned */
-						if ( p1 == RARROW ) p1 = TAB;					/* into TABs */
+			if ( p1 == LARROW ) p1 = SHIFT_HT;		/* DFlat+ 1.0: for these, arrows are turned */
+			if ( p1 == RARROW ) p1 = TAB;					/* into TABs */
             
             if (c == 'y')
                 SendMessage(wnd, COMMAND, ID_OK, 0);
