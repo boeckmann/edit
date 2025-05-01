@@ -6,6 +6,9 @@
 static union REGS regs;
 static struct SREGS sregs;
 
+int mouse_x = -1;
+int mouse_y = -1;
+
 static void near mouse(int m1,int m2,int m3,int m4)
 {
     regs.x.dx = m4;
@@ -48,8 +51,8 @@ void get_mouseposition(int *x, int *y)
     if (mouse_installed())    {
 		segread(&sregs);
         mouse(3,0,0,0);
-        *x = regs.x.cx/8;
-        *y = regs.x.dx/8;
+        mouse_x = *x = regs.x.cx/8;
+        mouse_y = *y = regs.x.dx/8;
 		if (SCREENWIDTH == 40)
 			*x /= 2;
     }

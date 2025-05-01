@@ -15,7 +15,7 @@ VideoResolution  TXT25 = {80, 25, FALSE, "PC Standard 80x25 text mode"};
 VideoResolution  TXT43 = {80, 43, FALSE, "EGA/VGA 80x43 text mode"};
 VideoResolution  TXT50 = {80, 50, FALSE, "EGA/VGA 80x50 text mode"};
 
-
+extern int mouse_x, mouse_y;
 
 /* -- read a rectangle of video memory into a save buffer -- */
 void getvideo(RECT rc, void far *bf)
@@ -64,11 +64,13 @@ unsigned int GetVideoChar(int x, int y)
 void PutVideoChar(int x, int y, int c)
 {
     if (x < SCREENWIDTH && y < SCREENHEIGHT)    {
-        hide_mousecursor();
+        if ( x == mouse_x && y == mouse_y )
+            hide_mousecursor();
 		if (SysConfig.VideoSnowyFlag)
 	        vpoke(MK_FP(video_address, vad(x,y)), c);
 		else
 	        poke(video_address, vad(x,y), c);
+        if ( x == mouse_x && y == mouse_y )
         show_mousecursor();
     }
 }
@@ -123,11 +125,13 @@ void wputch(WINDOW wnd, int c, int x, int y)
 		int ch = (c & 255) | (clr(foreground, background) << 8);
 		int xc = GetLeft(wnd)+x;
 		int yc = GetTop(wnd)+y;
-        hide_mousecursor();
+       if ( xc == mouse_x && yc == mouse_y )
+         hide_mousecursor();
 		if (SysConfig.VideoSnowyFlag)
         	vpoke(MK_FP(video_address, vad(xc, yc)), ch);
 		else
         	poke(video_address, vad(xc, yc), ch);
+       if ( xc == mouse_x && yc == mouse_y )
         show_mousecursor();
 	}
 }
@@ -239,10 +243,12 @@ void wputs(WINDOW wnd, void *s, int x, int y)
 
         if (len > 0)
             {
-            hide_mousecursor();
+            if (x1 <= mouse_x && mouse_x <= x2 && y1 == mouse_y )
+                hide_mousecursor();
             movetoscreen(ln+off, vad(x1+off,y1), len*2);
-            show_mousecursor();
-            }
+            if (x1 <= mouse_x && mouse_x <= x2 && y1 == mouse_y )
+                show_mousecursor();
+           }
 
         }
 
