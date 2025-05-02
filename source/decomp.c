@@ -6,10 +6,10 @@
  * does not exist
  */
 
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "dflatp.h"
-#include "dfptools.h"
+#include <stdint.h>
 #include "htree.h"
 
 static int in8;
@@ -17,7 +17,7 @@ static int ct8 = 8;
 static FILE *fi;
 static BYTECOUNTER bytectr;
 struct htr *HelpTree;
-static int root;
+static int16_t root;
 
 
 void BuildFileName(char *path, const char *fn, const char *ext)
@@ -42,7 +42,7 @@ void BuildFileName(char *path, const char *fn, const char *ext)
 FILE *OpenHelpFile(const char *fn, const char *md)
 {
     /* char *cp; */
-    int treect, i;
+    int16_t treect, i;
     char helpname[65];
 
     /* -------- get the name of the help file ---------- */
@@ -60,8 +60,8 @@ FILE *OpenHelpFile(const char *fn, const char *md)
 		if (HelpTree != NULL)	{
     		/* ---- read in the tree --- */
     		for (i = 0; i < treect-256; i++)    {
-        		fread(&HelpTree[i].left,  sizeof(int), 1, fi);
-        		fread(&HelpTree[i].right, sizeof(int), 1, fi);
+        		fread(&HelpTree[i].left,  sizeof(int16_t), 1, fi);
+        		fread(&HelpTree[i].right, sizeof(int16_t), 1, fi);
     		}
 		}
 	}
@@ -73,7 +73,7 @@ void *GetHelpLine(char *line)
 {
     int h;
     *line = '\0';
-    while (TRUE)    {
+    while (1)    {
         /* ----- decompress a line from the file ------ */
         h = root;
         /* ----- walk the Huffman tree ----- */
@@ -110,18 +110,18 @@ void *GetHelpLine(char *line)
 }
 
 /* --- compute the database file byte and bit position --- */
-void HelpFilePosition(long *offset, int *bit)
+void HelpFilePosition(uint32_t *offset, uint16_t *bit)
 {
-    *offset = ftell(fi);
+    *offset = (uint32_t)ftell(fi);
     if (ct8 < 8)
         --*offset;
     *bit = ct8;
 }
 
 /* -- position the database to the specified byte and bit -- */
-void SeekHelpLine(long offset, int bit)
+void SeekHelpLine(uint32_t offset, uint16_t bit)
 {
-    int fs = fseek(fi, offset, 0);
+    int fs = fseek(fi, offset, SEEK_SET);
 	assert(fs == 0);
     ct8 = bit;
     if (ct8 < 8)    {

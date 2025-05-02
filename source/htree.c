@@ -1,11 +1,11 @@
 /* ------------------- htree.c -------------------- */
-
-#include "dflatp.h"
+#include <stdlib.h>
+#include <stdint.h>
 #include "htree.h"
 
 struct htree *ht;
-int root;
-int treect;
+int16_t root;
+int16_t treect;
 
 /* ------ build a Huffman tree from a frequency array ------ */
 void buildtree(void)

@@ -8,6 +8,15 @@ CFLAGS += -d2
 CFLAGS += -os
 !endif
 
+!ifdef __UNIX__
+HOST_CL=cc
+REL_PATH=./
+!else
+HOST_CL=owcc
+HOST_CL_FLAGS=-mcmodel=l
+REL_PATH=
+!endif
+
 objs = &
 	main.obj &
 	edit.obj &
@@ -65,10 +74,20 @@ objs +=	logger.obj
 objs += nolog.obj
 !endif
 	
-all: edit.exe
+all: edit.exe edit.hlp
 
 edit.exe: $(objs) edit.lnk Makefile
 	wlink @edit.lnk
+
+edit.hlp: huffc.exe fixhelp.exe
+	$(REL_PATH)huffc.exe edit.txt edit.hlp
+	$(REL_PATH)fixhelp.exe edit
+
+huffc.exe:
+	$(HOST_CL) $(HOST_CL_FLAGS) huffc.c htree.c -o huffc.exe
+
+fixhelp.exe:
+	$(HOST_CL) $(HOST_CL_FLAGS) fixhelp.c decomp.c -o fixhelp.exe
 
 .c.obj:
 	wcc $(CFLAGS) -Fo=$*.obj $*.c

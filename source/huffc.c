@@ -1,11 +1,12 @@
 /* ------------------- huffc.c -------------------- */
-
-#include "dflatp.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include "htree.h"
 
 extern struct htree *ht;
-extern int root;
-extern int treect;
+extern int16_t root;
+extern int16_t treect;
 static int lastchar = '\n';
 
 static void compress(FILE *, int, int);
@@ -25,7 +26,7 @@ static int fgetcx(FILE *fi)
     return c;
 }
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     FILE *fi, *fo;
     int c;
@@ -69,8 +70,8 @@ void main(int argc, char *argv[])
 
     /* -- write the tree to the output file -- */
     for (c = 256; c < treect; c++)   {
-        int lf = ht[c].left;
-        int rt = ht[c].right;
+        int16_t lf = ht[c].left;
+        int16_t rt = ht[c].right;
         fwrite(&lf, sizeof lf, 1, fo);
         fwrite(&rt, sizeof rt, 1, fo);
     }
@@ -83,7 +84,7 @@ void main(int argc, char *argv[])
     fclose(fi);
     fclose(fo);
     free(ht);
-    exit(0);
+    return 0;
 }
 
 /* ---- compress a character value into a bit stream ---- */

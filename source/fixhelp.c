@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "htree.h"
 #define FIXHELP
 #include "helpbox.h"
@@ -15,6 +16,11 @@ static struct helps *LastHelp;
 static struct helps *ThisHelp;
 
 static void WriteText(char *);
+
+static int maximum(int a, int b)
+{
+    return (a >= b) ? a : b;
+}
 
 /* ---- compute the displayed length of a help text line --- */
 static int HelpLength(char *s)
@@ -39,6 +45,7 @@ int FindHelp(char *nm)
 {
 	int hlp = 0;
 	struct helps *thishelp = FirstHelp;
+    if (!nm) return -1;
 	while (thishelp != NULL)	{
 		if (strcmp(nm, thishelp->hname) == 0)
 			break;
@@ -48,7 +55,7 @@ int FindHelp(char *nm)
 	return thishelp ? hlp : -1;
 }
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     char *cp;
 	int HelpCount = 0;
@@ -148,7 +155,7 @@ main(int argc, char *argv[])
             strcpy(hline, "<end>");
         while (*hline != '<')    {
             ThisHelp->hwidth =
-                max(ThisHelp->hwidth, HelpLength(hline));
+                maximum(ThisHelp->hwidth, HelpLength(hline));
             ThisHelp->hheight++;
             if (GetHelpLine(hline) == NULL)
                 strcpy(hline, "<end>");
@@ -158,17 +165,18 @@ main(int argc, char *argv[])
 	fseek(helpfp, 0L, SEEK_END);
 	where = ftell(helpfp);
 	ThisHelp = FirstHelp;
-	fwrite(&HelpCount, sizeof(int), 1, helpfp);
+	fwrite(&HelpCount, sizeof(uint16_t), 1, helpfp);
 	while (ThisHelp != NULL)	{
 		ThisHelp->nexthlp = FindHelp(ThisHelp->NextName);
 		ThisHelp->prevhlp = FindHelp(ThisHelp->PrevName);
 		WriteText(ThisHelp->hname);
 		WriteText(ThisHelp->comment);
-		fwrite(&ThisHelp->hptr, sizeof(int)*5+sizeof(long), 1, helpfp);
+		fwrite(&ThisHelp->hptr, sizeof(uint16_t)*5+sizeof(uint32_t), 1, helpfp);
 		ThisHelp = ThisHelp->NextHelp;
 	}
-	fwrite(&where, sizeof(long), 1, helpfp);
+	fwrite(&where, sizeof(uint32_t), 1, helpfp);
     fclose(helpfp);
+
 	return 0;
 }
 
@@ -176,7 +184,7 @@ static void WriteText(char *text)
 {
 	char *np = text ? text : "";
 	int len = strlen(np);
-	fwrite(&len, sizeof(int), 1, helpfp);
+	fwrite(&len, sizeof(uint16_t), 1, helpfp);
 	if (len)
 		fwrite(np, len+1, 1, helpfp);
 }
