@@ -13,8 +13,10 @@ HOST_CL=cc
 REL_PATH=./
 !else
 HOST_CL=owcc
-HOST_CL_FLAGS=-mcmodel=l
 REL_PATH=
+!endif
+!ifdef __MSDOS__
+HOST_CL_FLAGS=-mcmodel=l
 !endif
 
 objs = &
