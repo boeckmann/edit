@@ -182,7 +182,7 @@ int DfpMain(int argc, char *argv[])
     		
     
     EditApplication = CreateWindow(APPLICATION, WindowTitle, 0, 0, -1, -1,
-            &MainMenu, NULL, MemoPadProc, MOVEABLE | SIZEABLE | HASBORDER | MINMAXBOX | HASSTATUSBAR);
+            &MainMenu, NULL, MemoPadProc, (int)(MOVEABLE | SIZEABLE | HASBORDER | MINMAXBOX | HASSTATUSBAR));
 
 
     LoadHelpFile(DFlatApplication);
