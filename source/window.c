@@ -41,9 +41,6 @@ WINDOW CreateWindow(
         else
             wnd->rc.tp = top;
         wnd->attrib = attrib;
-        if (ttl != NULL)
-			if (*ttl != '\0')
-	            AddAttribute(wnd, HASTITLEBAR);
         if (wndproc == NULL)
             wnd->wndproc = classdefs[Class].wndproc;
         else

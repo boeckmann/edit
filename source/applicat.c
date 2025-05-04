@@ -265,11 +265,15 @@ void ExecuteNonDFP (char *CmdLine)
 /* -------- Create the menu bar -------- */
 void CreateMenu(WINDOW wnd)
 {
+    char *menuTitle = NULL;
     AddAttribute(wnd, HASMENUBAR);
     if (wnd->MenuBarWnd != NULL)
         SendMessage(wnd->MenuBarWnd, CLOSE_WINDOW, 0, 0);
+    if (wnd->title && !TestAttribute(wnd, HASTITLEBAR)) {
+        menuTitle = wnd->title;
+    }
     wnd->MenuBarWnd = CreateWindow(MENUBAR,
-                        NULL,
+                        menuTitle,
                         GetClientLeft(wnd),
                         GetClientTop(wnd)-1,
                         1,

@@ -176,14 +176,13 @@ int DfpMain(int argc, char *argv[])
     /* (LoadConfig was called at this place in pre-0.7b versions) */
 
     if (cfg.ReadOnlyMode)
-    		sprintf (WindowTitle, "EDIT (viewer mode) %i.%i%c", ProgramModule.Ver_maj, ProgramModule.Ver_min, ProgramModule.Ver_rel+'a'-1);
+    		sprintf (WindowTitle, "EDIT (viewer mode)");
     else
-    		sprintf (WindowTitle, "FreeDOS Edit %i.%i%c", ProgramModule.Ver_maj, ProgramModule.Ver_min, ProgramModule.Ver_rel+'a'-1);
+    		sprintf (WindowTitle, "EDIT");
     		
     
     EditApplication = CreateWindow(APPLICATION, WindowTitle, 0, 0, -1, -1,
-            &MainMenu, NULL, MemoPadProc, (int)(MOVEABLE | SIZEABLE | HASBORDER | MINMAXBOX | HASSTATUSBAR));
-
+            &MainMenu, NULL, MemoPadProc, (int)(HASSTATUSBAR));
 
     LoadHelpFile(DFlatApplication);
     SendMessage(EditApplication, SETFOCUS, TRUE, 0);

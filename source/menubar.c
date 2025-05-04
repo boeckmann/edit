@@ -68,6 +68,9 @@ static void PaintMsg(WINDOW wnd)
         SendMessage(GetParent(wnd), ADDSTATUS, 0, 0);
     SetStandardColor(wnd);
     wputs(wnd, GetText(wnd), 0, 0);
+    if (wnd->title) {
+        wputs(wnd, wnd->title, wnd->wd - strlen(wnd->title) - 1, 0);
+    }
     if (ActiveMenuBar->ActiveSelection != -1 &&
             (wnd == inFocus || mwnd != NULL))    {
         char *sel, *cp;
