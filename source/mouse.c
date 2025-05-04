@@ -21,8 +21,10 @@ static void near mouse(int m1,int m2,int m3,int m4)
 /* ---------- reset the mouse ---------- */
 void resetmouse(void)
 {
+	int x, y;
 	segread(&sregs);
     mouse(0,0,0,0);
+    get_mouseposition(&x, &y);
 }
 
 /* ----- test to see if the mouse driver is installed ----- */
