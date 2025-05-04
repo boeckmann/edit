@@ -31,7 +31,7 @@ ClassDef(  DIALOG,      NORMAL,  DialogProc,      SHADOW    |
                                                   MOVEABLE  |
                                                   CONTROLBOX|
                                                   HASBORDER |
-                                                  HASTITLEBAR
+                                                  HASTITLEBAR |
                                                   NOCLIP     )
 ClassDef(  BOX,         NORMAL,  BoxProc,         HASBORDER  )
 ClassDef(  BUTTON,      TEXTBOX, ButtonProc,      SHADOW     )
