@@ -91,10 +91,10 @@ huffc.exe:
 fixhelp.exe:
 	$(HOST_CL) $(HOST_CL_FLAGS) fixhelp.c decomp.c -o fixhelp.exe
 
-.c.obj:
+.c.obj: .autodepend
 	wcc $(CFLAGS) -Fo=$*.obj $*.c
 
-edit.lnk : Makefile
+edit.lnk : Makefile .always
 	@echo NAME $^& >$^@
 	@echo SYSTEM DOS >>$^@
 	@echo OPTION QUIET >>$^@
