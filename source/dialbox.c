@@ -68,6 +68,7 @@ static int CreateWindowMsg(WINDOW wnd, PARAM p1, PARAM p2)
         else if ((ct->Class == LISTBOX || ct->Class == TEXTBOX) &&
 				ct->dwnd.h > 2)
             attrib |= HASBORDER;
+
         cwnd = CreateWindow(ct->Class,
                         ct->dwnd.title,
                         ct->dwnd.x+GetClientLeft(wnd),
@@ -279,7 +280,7 @@ BOOL DialogBox(WINDOW wnd, DBOX *db, BOOL Modal,
                         db,
                         wnd,
                         wndproc,
-                        (Modal ? SAVESELF : 0));
+                        (Modal ? SAVESELF : 0) | HASTITLEBAR);
 	SendMessage(DialogWnd, SETFOCUS, TRUE, 0);
     DialogWnd->Modal = Modal;
 	FirstFocus(db);

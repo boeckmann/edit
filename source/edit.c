@@ -485,6 +485,7 @@ static void OpenPadWindow(WINDOW wnd, char *FileName,char *NewFileName)
 		HSCROLLBAR |
 		MOVEABLE   |
 		HASBORDER  |
+        HASTITLEBAR|
 		SIZEABLE   |
                 MULTILINE);
 
