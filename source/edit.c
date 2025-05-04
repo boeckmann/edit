@@ -487,7 +487,7 @@ static void OpenPadWindow(WINDOW wnd, char *FileName,char *NewFileName)
 		HASBORDER  |
         HASTITLEBAR|
 		SIZEABLE   |
-                MULTILINE);
+        MULTILINE);
 
     if (cfg.ReadOnlyMode)		/* new feature in 0.7b */
         AddAttribute(wnd1, READONLY);

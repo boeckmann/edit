@@ -396,25 +396,24 @@ void SelectLines(VideoResolution  reqVR)
 	
 	  SysConfig.VideoCurrentResolution = reqVR;
 
-    if (SCREENHEIGHT != reqVR.VRes)    {
+    if (SCREENHEIGHT != reqVR.VRes) {
 
         SetScreenHeight(reqVR.VRes);
 
-    		/* ---- re-maximize ---- */
-        if (ApplicationWindow->condition == ISMAXIMIZED)	{
-           SendMessage(ApplicationWindow, SIZE, (PARAM) GetRight(ApplicationWindow),
-                    SCREENHEIGHT-1);
-    		   return;
-    		}
-    		/* --- adjust if current size does not fit --- */
-    		if (WindowHeight(ApplicationWindow) > SCREENHEIGHT)
-                SendMessage(ApplicationWindow, SIZE, (PARAM) GetRight(ApplicationWindow),
-                    (PARAM) GetTop(ApplicationWindow)+SCREENHEIGHT-1);
-    		/* --- if window is off-screen, move it on-screen --- */
-    		if (GetTop(ApplicationWindow) >= SCREENHEIGHT-1)
-     			 SendMessage(ApplicationWindow, MOVE, (PARAM) GetLeft(ApplicationWindow),
-    				  (PARAM) SCREENHEIGHT-WindowHeight(ApplicationWindow));
-      }
+        SendMessage(ApplicationWindow, SIZE, (PARAM) GetRight(ApplicationWindow),
+                 SCREENHEIGHT-1);
+    	   return;
+#if 0
+    	/* --- adjust if current size does not fit --- */
+    	if (WindowHeight(ApplicationWindow) > SCREENHEIGHT)
+             SendMessage(ApplicationWindow, SIZE, (PARAM) GetRight(ApplicationWindow),
+                 (PARAM) GetTop(ApplicationWindow)+SCREENHEIGHT-1);
+    	/* --- if window is off-screen, move it on-screen --- */
+    	if (GetTop(ApplicationWindow) >= SCREENHEIGHT-1)
+     		 SendMessage(ApplicationWindow, MOVE, (PARAM) GetLeft(ApplicationWindow),
+    			  (PARAM) SCREENHEIGHT-WindowHeight(ApplicationWindow));
+#endif
+    }
 }
 
 /* ---- set the screen height in the video hardware ---- */
