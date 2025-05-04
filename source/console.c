@@ -50,9 +50,9 @@ int Xbioskey(int cmd)
     union REGS kregs;
     if (keybase < 0) {
         volatile char far *kbtype = MK_FP(0x40,0x96); /* BIOS data flag */
-	keybase = ( ((*kbtype) & 0x10) != 0 ) ? 0x10 : 0;
-	/* 0 for 84 key XT mode, 0x10 for 102 key AT mode. */
-	/* (0x20 for 122 key mode, which is not used here) */
+        keybase = ( ((*kbtype) & 0x10) != 0 ) ? 0x10 : 0;
+        /* 0 for 84 key XT mode, 0x10 for 102 key AT mode. */
+        /* (0x20 for 122 key mode, which is not used here) */
     }
     kregs.h.ah = (char) (keybase + cmd);
     kregs.h.al = 0;
