@@ -1254,7 +1254,7 @@ static void SaveDeletedText(WINDOW wnd, char *bbl, unsigned int len)
 static void Forward(WINDOW wnd)
 {
     char *cc = CurrChar+1;
-    if (*cc == '\0')
+    if (*CurrChar == '\0')
         return;
     if (*CurrChar == '\n')    {
         Home(wnd);
