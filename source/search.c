@@ -123,7 +123,7 @@ again:
             /* align the window scroll to matching text */
             if (WndCol > ClientWidth(wnd)-1)
                 wnd->wleft = wnd->CurrCol;
-            if (wnd->WndRow > ClientHeight(wnd)-1)    {
+            if (wnd->WndRow != ClientHeight(wnd)-1)    {
                 wnd->wtop = wnd->CurrLine;
                 wnd->WndRow = 0;
             }
