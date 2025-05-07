@@ -52,8 +52,26 @@ static void SearchTextBox(WINDOW wnd, int incr)
     char *s1 = NULL, *s2, *cp1;
     DBOX *db = Replacing ? &ReplaceTextDB : &SearchTextDB;
     char *cp = GetEditBoxText(db, ID_SEARCHFOR);
-    BOOL rpl = TRUE, FoundOne = FALSE;
+    BOOL rpl = TRUE;
+    static FoundOne;
+    static int fromBeginning;
+    static int OrigCol, OrigLine;
 
+    if (!incr) {
+        FoundOne = FALSE;
+        OrigCol = wnd->CurrCol;
+        OrigLine = wnd->CurrLine;
+        fromBeginning = wnd->CurrCol == 0 && wnd->CurrLine == 0;
+    }
+
+    if (Replacing && CheckBoxSetting(&ReplaceTextDB, ID_REPLACEALL)) {
+        wnd->CurrCol = 0;
+        wnd->CurrLine = 0;
+        wnd->WndRow = wnd->CurrLine - wnd->wtop;
+        fromBeginning = 1;        
+    }
+
+again:
     while (rpl == TRUE && cp != NULL && *cp)    {
         /* even for "find again" (not replacing) this runs at least once */
         rpl = Replacing ?
@@ -131,8 +149,31 @@ static void SearchTextBox(WINDOW wnd, int incr)
         }
         break;
     }
-    if (!FoundOne)
+    if (!fromBeginning) {
+        if (YesNoBox("End reached. Start from beginning?")) {
+            wnd->CurrCol = 0;
+            wnd->CurrLine = 0;
+            wnd->WndRow = wnd->CurrLine - wnd->wtop;
+            SendMessage(wnd, KEYBOARD_CURSOR,
+                WndCol, wnd->WndRow);
+            fromBeginning = 1;
+            rpl = TRUE;
+            incr = FALSE;
+            goto again;             
+        }
+    } else {
+        if (FoundOne && !(Replacing && CheckBoxSetting(&ReplaceTextDB, ID_REPLACEALL)))
+            MessageBox("Search", "No more occurances.");
+    }
+
+    if (!FoundOne) {
         MessageBox("Search", "No matching text found");
+        wnd->CurrCol = OrigCol;
+        wnd->CurrLine = OrigLine;
+        wnd->WndRow = wnd->CurrLine - wnd->wtop;
+        SendMessage(wnd, KEYBOARD_CURSOR,
+            WndCol, wnd->WndRow);
+    }
 }
 
 /* ------- search for the occurrance of a string,
