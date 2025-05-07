@@ -152,7 +152,8 @@ void BuildDriveList(WINDOW wnd)
         char drname[15];
         unsigned int cd, dr;
         WINDOW lwnd = ct->wnd;
-
+        int nd = 0; /* number of accessible disks */
+        
         SendMessage(lwnd, CLEARTEXT, 0, 0);
     	cd = getdisk();
     	for (dr = 0; dr < 26; dr++) /* would be better to use LASTDRIVE */
@@ -202,6 +203,10 @@ void BuildDriveList(WINDOW wnd)
 #endif
                     }
             	SendMessage(lwnd,ADDTEXT,(PARAM)drname,0);
+                if (cd == dr) {
+                    SendMessage(lwnd, LB_SETSELECTION, nd, 0);
+                }
+                nd++;
 #endif
         	}
 
