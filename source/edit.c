@@ -519,11 +519,12 @@ static void OpenPadWindow(WINDOW wnd, char *FileName,char *NewFileName)
         }
     else
         {
-        if (strcmp(FileName,Untitled))
+        if (strcmp(FileName,Untitled)) {
             wnd1->extension = DFmalloc(strlen(FileName)+1);
+            strcpy(wnd1->extension, FileName);
+            LoadFile(wnd1); /* Only load if not a new file */
+        }
 
-	strcpy(wnd1->extension, FileName);
-	LoadFile(wnd1); /* Only load if not a new file */
         }
 
     SendMessage(wnd1, SETFOCUS, TRUE, 0);
