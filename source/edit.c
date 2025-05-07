@@ -759,12 +759,12 @@ static void SaveFile(WINDOW wnd, int Saveas)
             {
             /* could use CollapseTabs() here if user wants us to do so!? */
             size_t howmuch = strlen(GetText(wnd));
-            howmuch = fwrite(GetText(wnd), howmuch, 1, fp); /* ONE item, SIZE howmuch */
+            size_t written = fwrite(GetText(wnd), 1, howmuch, fp); /* ONE item, SIZE howmuch */
             fclose(fp);
             SendMessage(mwnd, CLOSE_WINDOW, 0, 0);
-            if (howmuch != 1) /* ONE item actually written? */
+            if (written != howmuch)
                 {
-                if (YesNoBox("Ran out of disk space while saving. Try again?"))
+                if (YesNoBox("Write error. Try again?"))
                     {
                     Saveas = 1;	/* 0.7c: ask user for a new place for next try */
                     goto trySaveAgain;
