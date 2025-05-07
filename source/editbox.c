@@ -1257,8 +1257,10 @@ static void Forward(WINDOW wnd)
     if (*CurrChar == '\0')
         return;
     if (*CurrChar == '\n')    {
-        Home(wnd);
-        Downward(wnd);
+        if (*cc != '\0') {
+            Home(wnd);
+            Downward(wnd);
+        }
     }
     else    {
         wnd->CurrCol++;
