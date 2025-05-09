@@ -108,4 +108,7 @@ edit.lnk : Makefile .always
 clean: .symbolic
 	rm -f *.obj
 	rm -f *.exe
+	rm -f *.OBJ
+	rm -f *.EXE
 	rm -f *.err
+	rm -f *.ERR

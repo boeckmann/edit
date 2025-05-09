@@ -1,5 +1,10 @@
 edit.exe
+edit.hlp
 edit.map
+edit.lnk
 *.obj
+*.o
+*.exe
 
-
+# Mac crap
+.DS_Store
