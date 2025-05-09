@@ -203,6 +203,21 @@ int TestCriticalError(void)
 /* AH bit 7 set. Also has special stack contents...                */
 /* returns action code in AL: 0 ignore 1 retry 2 abort (3 fail)    */
 
+#ifdef __WATCOMC__
+static void interrupt far newcrit(union INTPACK r);
+
+static void interrupt far newcrit(union INTPACK r)
+{
+    if (!(r.w.ax & 0x8000))     { /* if any drive affected... */
+        ermsg[sizeof(ermsg) - 3] =
+           r.h.al + 'A'; /* ... patch drive letter into message */
+        CriticalError = TRUE;    /* ... only then we have a crit. error */
+    }
+    r.w.ax = 0;
+}
+#endif
+
+#ifdef __TURBOC__
 static void interrupt far newcrit(IREGS ir);
 
 static void interrupt far newcrit(IREGS ir)
@@ -214,6 +229,7 @@ static void interrupt far newcrit(IREGS ir)
     }
     ir.ax = 0;
 }
+#endif
 
 #else
 
