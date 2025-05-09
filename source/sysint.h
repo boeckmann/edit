@@ -49,9 +49,9 @@
 #define HIDECURSOR 0x20
 /* ---------- keyboard prototypes -------- */
 int AltConvert(int);
-int Xbioskey(int); /* enhanced for 102 key keyboard support */
-int getkey(void);
-int getshift(void);
+unsigned Xbioskey(int); /* enhanced for 102 key keyboard support */
+unsigned getkey(void);
+unsigned getshift(void);
 BOOL keyhit(void);
 void beep(void);
 /* ---------- cursor prototypes -------- */

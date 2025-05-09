@@ -44,7 +44,7 @@ void SwapCursorStack(void)
 
 /* ---- BIOS keyboard routines with 84 and 102 key keyboard support ---- */
 /* (EDIT 0.7 -ea) */
-int Xbioskey(int cmd)
+unsigned Xbioskey(int cmd)
 {
     static int keybase = -1;
     union REGS kregs;
@@ -71,7 +71,7 @@ BOOL keyhit(void)
 }
 
 /* ---- Read a keystroke ---- */
-int getkey(void)
+unsigned getkey(void)
 {
     unsigned int c;
 #ifndef HOOKKEYB
@@ -124,7 +124,7 @@ int getkey(void)
 }
 
 /* ---------- read the keyboard shift status --------- */
-int getshift(void)
+unsigned getshift(void)
 {
     static int enhkeyb = -1; /* 1 for an enhanced keyboard */
     static char far *kbtype = MK_FP(0x40,0x96);
