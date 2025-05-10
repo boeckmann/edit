@@ -10,14 +10,9 @@ static void near vpoke(int far *vp, int c);
 void movefromscreen(void far *bf, int offset, int len);
 void movetoscreen(void far *bf, int offset, int len);
 
-#define MOUSE_IN_RECT(r) (RectLeft(r) <= mouse_x && RectRight(r) >= mouse_y && RectTop(r) <= mouse_y && RectBottom(r) >= mouse_y)
-#define IS_MOUSE_POS(x,y) (mouse_x == (x) && mouse_y == (y))
-
 VideoResolution  TXT25 = {80, 25, FALSE, "PC Standard 80x25 text mode"};
 VideoResolution  TXT43 = {80, 43, FALSE, "EGA/VGA 80x43 text mode"};
 VideoResolution  TXT50 = {80, 50, FALSE, "EGA/VGA 80x50 text mode"};
-
-extern int mouse_x, mouse_y;
 
 /* -- read a rectangle of video memory into a save buffer -- */
 void getvideo(RECT rc, void far *bf)
@@ -26,15 +21,13 @@ void getvideo(RECT rc, void far *bf)
     int bytes_row = (RectRight(rc)-RectLeft(rc)+1) * 2;
     unsigned vadr = vad(RectLeft(rc), RectTop(rc));
 
-    if (MOUSE_IN_RECT(rc))
-        hide_mousecursor();
+    hide_mousecursor_in_rect(rc);
     while (ht--)    {
 		movefromscreen(bf, vadr, bytes_row);
         vadr += SCREENWIDTH*2;
         bf = (char far *)bf + bytes_row;
     }
-    if (MOUSE_IN_RECT(rc))
-        show_mousecursor();
+    show_mousecursor();
 }
 
 /* -- write a rectangle of video memory from a save buffer -- */
@@ -43,29 +36,26 @@ void storevideo(RECT rc, void far *bf)
     int ht = RectBottom(rc)-RectTop(rc)+1;
     int bytes_row = (RectRight(rc)-RectLeft(rc)+1) * 2;
     unsigned vadr = vad(RectLeft(rc), RectTop(rc));
-    if (MOUSE_IN_RECT(rc))
-        hide_mousecursor();
+
+    hide_mousecursor_in_rect(rc);
     while (ht--)    {
 		movetoscreen(bf, vadr, bytes_row);
         vadr += SCREENWIDTH*2;
         bf = (char far *)bf + bytes_row;
     }
-    if (MOUSE_IN_RECT(rc))
-        show_mousecursor();
+    show_mousecursor();
 }
 
 /* -------- read a character of video memory ------- */
 unsigned int GetVideoChar(int x, int y)
 {
     int c;
-    if (IS_MOUSE_POS(x, y))
-        hide_mousecursor();
+
 	if (SysConfig.VideoSnowyFlag)
 	    c = vpeek(MK_FP(video_address, vad(x,y)));
 	else
 	    c = peek(video_address, vad(x,y));
-    if (IS_MOUSE_POS(x, y))
-        show_mousecursor();
+
     return c;
 }
 
@@ -73,14 +63,10 @@ unsigned int GetVideoChar(int x, int y)
 void PutVideoChar(int x, int y, int c)
 {
     if (x < SCREENWIDTH && y < SCREENHEIGHT)    {
-        if (IS_MOUSE_POS(x, y))
-            hide_mousecursor();
 		if (SysConfig.VideoSnowyFlag)
 	        vpoke(MK_FP(video_address, vad(x,y)), c);
 		else
 	        poke(video_address, vad(x,y), c);
-        if (IS_MOUSE_POS(x, y))
-            show_mousecursor();
     }
 }
 
@@ -135,14 +121,10 @@ void wputch(WINDOW wnd, int c, int x, int y)
 		int xc = GetLeft(wnd)+x;
 		int yc = GetTop(wnd)+y;
         
-        if (IS_MOUSE_POS(xc, yc))
-            hide_mousecursor();
 		if (SysConfig.VideoSnowyFlag)
         	vpoke(MK_FP(video_address, vad(xc, yc)), ch);
 		else
         	poke(video_address, vad(xc, yc), ch);
-        if (IS_MOUSE_POS(xc, yc))
-            show_mousecursor();
 	}
 }
 
@@ -152,6 +134,7 @@ void wputs(WINDOW wnd, void *s, int x, int y)
     int x1=GetLeft(wnd)+x;
     int x2=x1;
     int y1=GetTop(wnd)+y;
+    RECT rc;
 
     if (x1 < SCREENWIDTH && y1 < SCREENHEIGHT && isVisible(wnd))
         {
@@ -200,11 +183,7 @@ void wputs(WINDOW wnd, void *s, int x, int y)
 
             if (ClipString)
                 if (!CharInView(wnd, x, y)) {
-                    if (IS_MOUSE_POS(x, y))
-                        hide_mousecursor();
                     *cp1 = peek(video_address, vad(x2,y1));
-                    if (IS_MOUSE_POS(x, y))
-                        show_mousecursor();
                 }
 
             cp1++;
@@ -222,8 +201,8 @@ void wputs(WINDOW wnd, void *s, int x, int y)
         if (!ClipString && !TestAttribute(wnd, NOCLIP))
             {
             /* -- clip the line to within ancestor windows -- */
-            RECT rc = WindowRect(wnd);
             WINDOW nwnd = GetParent(wnd);
+            rc = WindowRect(wnd);
 
             while (len > 0 && nwnd != NULL)
                 {
@@ -258,10 +237,11 @@ void wputs(WINDOW wnd, void *s, int x, int y)
 
         if (len > 0)
             {
-            if (x1 <= mouse_x && mouse_x <= x2 && y1 == mouse_y )
-                hide_mousecursor();
+                rc.lf = x1;
+                rc.rt = x2;
+                rc.tp = rc.bt = y1;
+                hide_mousecursor_in_rect(rc);
             movetoscreen(ln+off, vad(x1+off,y1), len*2);
-            if (x1 <= mouse_x && mouse_x <= x2 && y1 == mouse_y )
                 show_mousecursor();
            }
 
@@ -338,8 +318,10 @@ void movefromscreen(void far *bf, int offset, int len)
 static int near vpeek(int far *vp)
 {
 	int c;
+#if 0
 	if (SysConfig.VideoSnowyFlag)	/* added 0.7c */
 		waitforretrace();
+#endif
 	c = *vp;
 	return c;
 }

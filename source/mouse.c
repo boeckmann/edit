@@ -6,8 +6,6 @@
 static union REGS regs;
 static struct SREGS sregs;
 
-int mouse_x = -1;
-int mouse_y = -1;
 
 static void near mouse(int m1,int m2,int m3,int m4)
 {
@@ -24,7 +22,6 @@ void resetmouse(void)
 	int x, y;
 	segread(&sregs);
     mouse(0,0,0,0);
-    get_mouseposition(&x, &y);
 }
 
 /* ----- test to see if the mouse driver is installed ----- */
@@ -53,8 +50,8 @@ void get_mouseposition(int *x, int *y)
     if (mouse_installed())    {
 		segread(&sregs);
         mouse(3,0,0,0);
-        mouse_x = *x = regs.x.cx/8;
-        mouse_y = *y = regs.x.dx/8;
+        *x = regs.x.cx/8;
+        *y = regs.x.dx/8;
 		if (SCREENWIDTH == 40)
 			*x /= 2;
     }
@@ -87,6 +84,16 @@ void hide_mousecursor(void)
 		segread(&sregs);
         mouse(2,0,0,0);
 	}
+}
+
+void hide_mousecursor_in_rect(RECT rc)
+{
+	regs.x.ax = 0x10;
+    regs.x.cx = rc.lf*8;
+    regs.x.dx = rc.tp*8;
+    regs.x.si = rc.rt*8+7;
+    regs.x.di = rc.bt*8+7;
+    int86x(MOUSE, &regs, &regs, &sregs);
 }
 
 /* --- return true if a mouse button has been released --- */

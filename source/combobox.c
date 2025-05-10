@@ -25,7 +25,9 @@ int ComboProc(WINDOW wnd, MESSAGE msg, PARAM p1, PARAM p2)
         case PAINT:
             foreground = WndBackground(wnd);
             background = WndForeground(wnd);
+            hide_mousecursor_in_rect(WindowRect(wnd));
             wputch(wnd, DOWNSCROLLBOX, WindowWidth(wnd), 0);
+            show_mousecursor();
             break;
         case KEYBOARD:
             if ((int)p1 == DN)    {

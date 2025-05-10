@@ -22,12 +22,14 @@ static void AllocationError(void)
 		/* ------ close all windows ------ */
 		SendMessage(ApplicationWindow, CLOSE_WINDOW, 0, 0);
         getvideo(rc, savbuf);
+        hide_mousecursor();
 		for (x = 0; x < 18; x++)	{
 			for (y = 0; y < 3; y++)		{
 				int c = (255 & (*(*(ErrMsg+y)+x))) | 0x7000;
 				PutVideoChar(x+rc.lf, y+rc.tp, c);
 			}
 		}
+		show_mousecursor();
 		getkey();
         storevideo(rc, savbuf);
 		if (AllocTesting)

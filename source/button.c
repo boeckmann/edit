@@ -4,15 +4,25 @@
 
 void PaintMsg(WINDOW wnd, CTLWINDOW *ct, RECT *rc)
 {
+
     if (isVisible(wnd))    {
+
         if (TestAttribute(wnd, SHADOW) && !SysConfig.VideoCurrentColorScheme.isMonoScheme)    {
             /* -------- draw the button's shadow ------- */
             int x;
+            RECT rcb;
+            rcb.lf = GetLeft(wnd);
+            rcb.rt = GetLeft(wnd)+WindowWidth(wnd);
+            rcb.tp = GetTop(wnd);
+            rcb.bt = rcb.tp+1;
+
             background = WndBackground(GetParent(wnd));
             foreground = BLACK;
+            hide_mousecursor_in_rect(rcb);
             for (x = 1; x <= WindowWidth(wnd); x++)
                 wputch(wnd, 223, x, 1);
             wputch(wnd, 220, WindowWidth(wnd), 0);
+            show_mousecursor();
         }
         if (ct->itext != NULL)    {
             unsigned char *txt;
@@ -42,11 +52,13 @@ void LeftButtonMsg(WINDOW wnd, MESSAGE msg, CTLWINDOW *ct)
         int x;
         background = WndBackground(GetParent(wnd));
         foreground = WndBackground(wnd);
+        hide_mousecursor();
         wputch(wnd, ' ', 0, 0);
         for (x = 0; x < WindowWidth(wnd); x++)    {
             wputch(wnd, 220, x+1, 0);
             wputch(wnd, 223, x+1, 1);
         }
+        show_mousecursor();
     }
     if (msg == LEFT_BUTTON)
         SendMessage(NULL, WAITMOUSE, 0, 0);

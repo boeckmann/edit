@@ -1056,10 +1056,12 @@ static void SaveBorder(RECT rc)
     RectTop(lrc) = RectBottom(lrc) = RectBottom(rc);
     getvideo(lrc, Bsave + Bwd);
     cp = Bsave + Bwd * 2;
+    hide_mousecursor();
     for (i = 1; i < Bht-1; i++)    {
         *cp++ = GetVideoChar(RectLeft(rc),RectTop(rc)+i);
         *cp++ = GetVideoChar(RectRight(rc),RectTop(rc)+i);
     }
+    show_mousecursor();
 }
 /* ---- restore video area used by dummy window border ---- */
 static void RestoreBorder(RECT rc)
@@ -1074,10 +1076,12 @@ static void RestoreBorder(RECT rc)
         RectTop(lrc) = RectBottom(lrc) = RectBottom(rc);
         storevideo(lrc, Bsave + Bwd);
         cp = Bsave + Bwd * 2;
+        hide_mousecursor();
         for (i = 1; i < Bht-1; i++)    {
             PutVideoChar(RectLeft(rc),RectTop(rc)+i, *cp++);
             PutVideoChar(RectRight(rc),RectTop(rc)+i, *cp++);
         }
+        show_mousecursor();
         free(Bsave);
         Bsave = NULL;
     }

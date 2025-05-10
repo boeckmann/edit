@@ -113,6 +113,7 @@ void get_mouseposition(int *x, int *y);
 void set_mouseposition(int x, int y);
 void show_mousecursor(void);
 void hide_mousecursor(void);
+void hide_mousecursor_in_rect(RECT rc);
 int button_releases(void);
 void resetmouse(void);
 void set_mousetravel(int, int, int, int);

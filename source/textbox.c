@@ -210,11 +210,13 @@ static BOOL MouseMovedMsg(WINDOW wnd, PARAM p1, PARAM p2)
         if (my-1 != wnd->VScrollBox)    {
             foreground = FrameForeground(wnd);
             background = FrameBackground(wnd);
+            hide_mousecursor();
             wputch(wnd, SCROLLBARCHAR, WindowWidth(wnd)-1,
                     wnd->VScrollBox+1);
             wnd->VScrollBox = my-1;
             wputch(wnd, SCROLLBOXCHAR, WindowWidth(wnd)-1,
                     my);
+            show_mousecursor();
         }
         return TRUE;
     }
@@ -223,10 +225,12 @@ static BOOL MouseMovedMsg(WINDOW wnd, PARAM p1, PARAM p2)
         if (mx-1 != wnd->HScrollBox)    {
             foreground = FrameForeground(wnd);
             background = FrameBackground(wnd);
+            hide_mousecursor();
             wputch(wnd, SCROLLBARCHAR, wnd->HScrollBox+1,
                     WindowHeight(wnd)-1);
             wnd->HScrollBox = mx-1;
             wputch(wnd, SCROLLBOXCHAR, mx, WindowHeight(wnd)-1);
+            show_mousecursor();
         }
         return TRUE;
     }
@@ -868,10 +872,14 @@ static void MoveScrollBox(WINDOW wnd, int vscrollbox)
 {
     foreground = FrameForeground(wnd);
     background = FrameBackground(wnd);
+
+    hide_mousecursor();
     wputch(wnd, SCROLLBARCHAR, WindowWidth(wnd)-1,
             wnd->VScrollBox+1);
     wputch(wnd, SCROLLBOXCHAR, WindowWidth(wnd)-1,
             vscrollbox+1);
+    show_mousecursor();
+    
     wnd->VScrollBox = vscrollbox;
 }
 

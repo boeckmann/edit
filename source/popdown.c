@@ -171,12 +171,14 @@ static int BorderMsg(WINDOW wnd)
         inFocus = NULL;
         rtn = BaseWndProc(POPDOWNMENU, wnd, BORDER, 0, 0);
         inFocus = currFocus;
+        hide_mousecursor_in_rect(WindowRect(wnd));
         for (i = 0; i < ClientHeight(wnd); i++)    {
             if (*TextLine(wnd, i) == LINE)    {
                 wputch(wnd, LEDGE, 0, i+1);
                 wputch(wnd, REDGE, WindowWidth(wnd)-1, i+1);
             }
         }
+        show_mousecursor();
     }
     return rtn;
 }
