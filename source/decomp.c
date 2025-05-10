@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <stdint.h>
 #include "htree.h"
 
 static int in8;
@@ -17,7 +16,7 @@ static int ct8 = 8;
 static FILE *fi;
 static BYTECOUNTER bytectr;
 struct htr *HelpTree;
-static int16_t root;
+static s16 root;
 
 
 void BuildFileName(char *path, const char *fn, const char *ext)
@@ -42,7 +41,7 @@ void BuildFileName(char *path, const char *fn, const char *ext)
 FILE *OpenHelpFile(const char *fn, const char *md)
 {
     /* char *cp; */
-    int16_t treect, i;
+    s16 treect, i;
     char helpname[65];
 
     /* -------- get the name of the help file ---------- */
@@ -60,8 +59,8 @@ FILE *OpenHelpFile(const char *fn, const char *md)
 		if (HelpTree != NULL)	{
     		/* ---- read in the tree --- */
     		for (i = 0; i < treect-256; i++)    {
-        		fread(&HelpTree[i].left,  sizeof(int16_t), 1, fi);
-        		fread(&HelpTree[i].right, sizeof(int16_t), 1, fi);
+        		fread(&HelpTree[i].left,  sizeof(s16), 1, fi);
+        		fread(&HelpTree[i].right, sizeof(s16), 1, fi);
     		}
 		}
 	}
@@ -110,16 +109,16 @@ void *GetHelpLine(char *line)
 }
 
 /* --- compute the database file byte and bit position --- */
-void HelpFilePosition(uint32_t *offset, uint16_t *bit)
+void HelpFilePosition(u32 *offset, u16 *bit)
 {
-    *offset = (uint32_t)ftell(fi);
+    *offset = (u32)ftell(fi);
     if (ct8 < 8)
         --*offset;
     *bit = ct8;
 }
 
 /* -- position the database to the specified byte and bit -- */
-void SeekHelpLine(uint32_t offset, uint16_t bit)
+void SeekHelpLine(u32 offset, u16 bit)
 {
     int fs = fseek(fi, offset, SEEK_SET);
 	assert(fs == 0);

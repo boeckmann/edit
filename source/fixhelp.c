@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include "htree.h"
 #define FIXHELP
 #include "helpbox.h"
@@ -165,16 +164,16 @@ int main(int argc, char *argv[])
 	fseek(helpfp, 0L, SEEK_END);
 	where = ftell(helpfp);
 	ThisHelp = FirstHelp;
-	fwrite(&HelpCount, sizeof(uint16_t), 1, helpfp);
+	fwrite(&HelpCount, sizeof(u16), 1, helpfp);
 	while (ThisHelp != NULL)	{
 		ThisHelp->nexthlp = FindHelp(ThisHelp->NextName);
 		ThisHelp->prevhlp = FindHelp(ThisHelp->PrevName);
 		WriteText(ThisHelp->hname);
 		WriteText(ThisHelp->comment);
-		fwrite(&ThisHelp->hptr, sizeof(uint16_t)*5+sizeof(uint32_t), 1, helpfp);
+		fwrite(&ThisHelp->hptr, sizeof(u16)*5+sizeof(u32), 1, helpfp);
 		ThisHelp = ThisHelp->NextHelp;
 	}
-	fwrite(&where, sizeof(uint32_t), 1, helpfp);
+	fwrite(&where, sizeof(u32), 1, helpfp);
     fclose(helpfp);
 
 	return 0;
@@ -184,7 +183,7 @@ static void WriteText(char *text)
 {
 	char *np = text ? text : "";
 	int len = strlen(np);
-	fwrite(&len, sizeof(uint16_t), 1, helpfp);
+	fwrite(&len, sizeof(u16), 1, helpfp);
 	if (len)
 		fwrite(np, len+1, 1, helpfp);
 }

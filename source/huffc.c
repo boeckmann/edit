@@ -1,12 +1,11 @@
 /* ------------------- huffc.c -------------------- */
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include "htree.h"
 
 extern struct htree *ht;
-extern int16_t root;
-extern int16_t treect;
+extern s16 root;
+extern s16 treect;
 static int lastchar = '\n';
 
 static void compress(FILE *, int, int);
@@ -70,8 +69,8 @@ int main(int argc, char *argv[])
 
     /* -- write the tree to the output file -- */
     for (c = 256; c < treect; c++)   {
-        int16_t lf = ht[c].left;
-        int16_t rt = ht[c].right;
+        s16 lf = ht[c].left;
+        s16 rt = ht[c].right;
         fwrite(&lf, sizeof lf, 1, fo);
         fwrite(&rt, sizeof rt, 1, fo);
     }

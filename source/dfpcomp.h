@@ -43,7 +43,7 @@
 #include <bios.h>
 #include <ctype.h>
 #include <io.h>
-#if 0
+#if __TURBOC__
 #include <sys\types.h>
 #include <sys\stat.h>
 #endif

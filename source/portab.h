@@ -4,12 +4,26 @@
 
 /* //////////////////////////////// OPEN WATCOM ///////////////////////////// */
 
-#include <dos.h>
+#ifdef __TURBOC__
+
+typedef unsigned short u16;
+typedef signed short s16;
+typedef unsigned long u32;
+typedef signed long s32;
+
+#else
+
+#include <stdint.h>
+typedef uint16_t u16;
+typedef int16_t s16;
+typedef uint32_t u32;
+typedef int32_t s32;
+
+#endif
 
 #if MSC | __WATCOMC__
 #include <direct.h>
-#else
-#include <dir.h>
+#include <dos.h>
 #endif
 
 
@@ -79,6 +93,9 @@ void  RestoreControlBreakHandler ();
 /* //////////////////////////////// BORLAND/TURBO C  //////////////////////// */
 
 #ifdef __TURBOC__
+
+#include <dos.h>
+#include <dir.h>
 
 #define CFlag(regs) ( regs.x.flags & 0x01 )
 

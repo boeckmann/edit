@@ -3,17 +3,16 @@
 #ifndef HELPBOX_H
 #define HELPBOX_H
 
-#include <stdint.h>
 /* --------- linked list of help text collections -------- */
 struct helps {
     char *hname;
 	char *comment;
-    uint32_t hptr;
-    uint16_t bit;
-    uint16_t hheight;
-    uint16_t hwidth;
-	uint16_t nexthlp;
-	uint16_t prevhlp;
+    u32 hptr;
+    u16 bit;
+    u16 hheight;
+    u16 hwidth;
+	u16 nexthlp;
+	u16 prevhlp;
     void *hwnd;
 	char *PrevName;
 	char *NextName;
