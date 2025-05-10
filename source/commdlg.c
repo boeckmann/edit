@@ -66,9 +66,22 @@ static BOOL DlgFileOpen(char *Fspec, char *Sspec, char *Fname, DBOX *db)
 
 }
 
+
+static int DriveGood(char drv)
+{
+    static char *fn = "A:\\*.*";
+    FBLOCK ff;
+    fn[0] = drv;
+    CriticalError = 0;
+    return (FindFirst(fn, 0, ff) == 0) && !CriticalError;
+}
+
+
 /* Process dialog box messages */
 static int DlgFnOpen(WINDOW wnd,MESSAGE msg,PARAM p1,PARAM p2)
 {
+    int disk;
+
     switch (msg)
         {
         case CREATE_WINDOW:
@@ -166,9 +179,17 @@ static int DlgFnOpen(WINDOW wnd,MESSAGE msg,PARAM p1,PARAM p2)
                             {
                             /* Choose dir */
                             char dr[15];
+                            disk = getdisk();
                             GetDlgListText(wnd, dr, ID_DRIVE);
                             /* *** 0.6e: string has form "[-X-]" *** */
-                            setdisk(dr[2] - 'A'); /* fixed 0.6e: must use [2] */
+                            if (DriveGood(dr[2]) && !CriticalError) {
+                                setdisk(dr[2] - 'A'); /* fixed 0.6e: must use [2] */
+                            }
+                            else {
+                                setdisk(disk);
+                                CriticalError = 0;
+                                ErrorMessage("Drive inaccessible!");
+                            }
                             InitFnOpenDlgBox(wnd);
                             SendMessage(wnd, COMMAND, ID_OK, 0);
 	                    }
@@ -196,11 +217,11 @@ static void InitFnOpenDlgBox(WINDOW wnd)
     if (*FileSpec)
         PutItemText(wnd, ID_FILENAME, FileSpec);
 
+    BuildDriveList(wnd);
+
     BuildPathDisplay(wnd);
     if (BuildFileList(wnd, SrchSpec))
         BuildDirectoryList(wnd);
-
-    BuildDriveList(wnd);
 }
 
 /* Strip the drive and path information from a file spec */

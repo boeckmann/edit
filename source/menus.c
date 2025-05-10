@@ -8,7 +8,7 @@
 DEFPROGRAM
   MOD_DESCRIPTION("FreeDOS EDIT 0.9c")
   MOD_VERSION(0,9,3,0)
-  MOD_COPYRIGHT("J.Cosentino, E.Auer, B.Boeckmann")
+  MOD_COPYRIGHT("J.Cosentino, E.Auer")
   MOD_LICENSE("GNU GPL 2.0")
   MOD_ABOUT("FreeDOS Edit is the standard text|editor for the FreeDOS Project")
 END_DEFMODULE

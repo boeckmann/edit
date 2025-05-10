@@ -220,4 +220,7 @@ int YesNoBoxProc(WINDOW, MESSAGE, PARAM, PARAM);
 int MessageBoxProc(WINDOW, MESSAGE, PARAM, PARAM);
 
 
+/* set by critical error handler */
+extern volatile BOOL CriticalError;
+
 #endif

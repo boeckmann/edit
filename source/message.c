@@ -11,7 +11,7 @@ static int px = -1, py = -1;
 static int pmx = -1, pmy = -1;
 static int mx, my;
 static int handshaking = 0;
-static volatile BOOL CriticalError;
+volatile BOOL CriticalError;
 BOOL AllocTesting = FALSE;
 jmp_buf AllocError;
 BOOL AltDown = FALSE;
