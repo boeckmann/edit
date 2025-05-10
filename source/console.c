@@ -44,6 +44,10 @@ void SwapCursorStack(void)
 
 /* ---- BIOS keyboard routines with 84 and 102 key keyboard support ---- */
 /* (EDIT 0.7 -ea) */
+
+#ifdef __TURBOC__
+#define ZFlag(regs) ( regs.x.flags & 0x40 )
+
 unsigned Xbioskey(int cmd)
 {
     static int keybase = -1;
@@ -63,11 +67,38 @@ unsigned Xbioskey(int cmd)
 
     return kregs.x.ax;
 }
+#endif
+
+#ifdef __WATCOMC__
+unsigned Xbioskey(int cmd)
+{
+    static int keybase = -1;
+    union REGPACK r;
+    if (keybase < 0) {
+        volatile char far *kbtype = MK_FP(0x40,0x96); /* BIOS data flag */
+        keybase = ( ((*kbtype) & 0x10) != 0 ) ? 0x10 : 0;
+        /* 0 for 84 key XT mode, 0x10 for 102 key AT mode. */
+        /* (0x20 for 122 key mode, which is not used here) */
+    }
+    r.h.ah = (char) (keybase + cmd);
+    r.h.al = 0;
+    intr(0x16, &r);
+
+    if (cmd == 1) {
+        /* zero flag set if no key available */
+        return !(r.w.flags & 0x40);
+    }
+    else {
+        return r.w.ax;
+    }
+}
+#endif
+
 
 /* ---- Test for keystroke ---- */
 BOOL keyhit(void)
 {
-    return (kbhit() ? TRUE : FALSE);
+    return (Xbioskey(1) ? TRUE : FALSE);
 }
 
 /* ---- Read a keystroke ---- */

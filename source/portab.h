@@ -58,8 +58,7 @@ void halt(void);
 #define fnsplit(f, d, n, nm, e)  (_splitpath(f, d, n, nm, e) )
 #define fnmerge(spath, drive, dir, name, ext)  (_makepath(spath, drive, dir, name, ext))
 
-#define ZFlag(regs) ( regs.x.cflag & 0x40 )
-#define CFlag(regs) ( regs.x.cflag & 0x01 )
+#define CFlag(regs) ( regs.x.cflag )
 
 typedef struct fblock { struct find_t ff; } FBLOCK;
 #define FindFirst(path,attr,blk) ( _dos_findfirst(path, attr, &(blk.ff)) )
@@ -81,8 +80,6 @@ void  RestoreControlBreakHandler ();
 
 #ifdef __TURBOC__
 
-#define kbhit()  ( Xbioskey(1) != 0 )
-#define ZFlag(regs) ( regs.x.flags & 0x40 )
 #define CFlag(regs) ( regs.x.flags & 0x01 )
 
 typedef struct fblock { struct ffblk ff; } FBLOCK;

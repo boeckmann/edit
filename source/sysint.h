@@ -34,7 +34,7 @@
 #else
 /* if irq 9 not hooked, waitforkeyboard only drains buffer */
 /* (used for "press a key to continue" cases only) */
-#define waitforkeyboard() while (!Xbioskey(1)) (void)Xbioskey(0)
+#define waitforkeyboard() while (Xbioskey(1)) (void)Xbioskey(0)
 #endif
 
 /* ----- keyboard BIOS (0x16) functions -------- */
