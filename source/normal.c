@@ -464,14 +464,22 @@ static void MaximizeMsg(WINDOW wnd)
         rc = ClientRect(GetParent(wnd));
     wnd->oldcondition = wnd->condition;
     wnd->condition = ISMAXIMIZED;
+    if (wnd->oldcondition == ISMINIMIZED) {
+        if (wnd->restored_attrib != 0) {
+            wnd->attrib = wnd->restored_attrib;
+            wnd->restored_attrib = 0;
+        }
+    }
+    else {
+        if (wnd->restored_attrib == 0)
+            wnd->restored_attrib = wnd->attrib;
+    }
 	wnd->wasCleared = FALSE;
     SendMessage(wnd, HIDE_WINDOW, 0, 0);
     SendMessage(wnd, MOVE,
         RectLeft(rc), RectTop(rc));
     SendMessage(wnd, SIZE,
         RectRight(rc), RectBottom(rc));
-    if (wnd->restored_attrib == 0)
-        wnd->restored_attrib = wnd->attrib;
     ClearAttribute(wnd, SHADOW);
     SendMessage(wnd, SHOW_WINDOW, 0, 0);
     wnd->RestoredRC = holdrc;
