@@ -7,7 +7,6 @@
 
 #define CHARSLINE 80
 #define LINESPAGE 66
-#define ENABLEGLOBALARGV
 
 /* I N C L U D E S /////////////////////////////////////////////////////// */
 
@@ -164,10 +163,6 @@ int DfpMain(int argc, char *argv[])
                "         Wildcards can be used here.\n", DFlatpVersion);
         exit(1);
         }
-
-#ifdef ENABLEGLOBALARGV
-    Argv = argv;
-#endif
 
     InstallHelpProcedure (DisplayHelp);
 

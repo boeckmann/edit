@@ -23,15 +23,12 @@ void BuildFileName(char *path, const char *fn, const char *ext)
 {
     char *cp = path;
 
-/* if Argv[0] is available then open file in same dir as Application binary */
-#ifdef ENABLEGLOBALARGV
-    strcpy(path, Argv[0]);
+    strcpy(path, __argv[0]);
     cp = strrchr(path, '\\');
     if (cp == NULL)
         cp = path;
     else 
         cp++;
-#endif
     strcpy(cp, fn);
     strcat(cp, ext);
 }
@@ -42,7 +39,7 @@ FILE *OpenHelpFile(const char *fn, const char *md)
 {
     /* char *cp; */
     s16 treect, i;
-    char helpname[65];
+    char helpname[_MAX_PATH];
 
     /* -------- get the name of the help file ---------- */
     BuildFileName(helpname, fn, ".hlp");

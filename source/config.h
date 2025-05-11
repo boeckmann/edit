@@ -8,9 +8,6 @@
 
 extern char DFlatApplication[];
 
-#ifdef ENABLEGLOBALARGV
-char **Argv;
-#endif
 
 /* ----------- configuration parameters ----------- */
 typedef struct config {
