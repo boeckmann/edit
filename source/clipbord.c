@@ -39,7 +39,8 @@ void ClearClipboard(void)
 BOOL PasteText(WINDOW wnd, char *SaveTo, unsigned len)
 {
     if (SaveTo != NULL && len > 0)    {
-        unsigned plen = strlen(wnd->text) + len;
+        unsigned long textlen = strlen(wnd->text);
+        unsigned long plen = textlen + len;
 
 		if (plen <= wnd->MaxTextLength)	{
         	if (plen+1 > wnd->textlen)    {
@@ -52,6 +53,9 @@ BOOL PasteText(WINDOW wnd, char *SaveTo, unsigned len)
            	wnd->TextChanged = TRUE;
 			return TRUE;
 		}
+        else {
+            ErrorMessage("Paste operation exceeds maximum document size.");
+        }
     }
 	return FALSE;
 }
