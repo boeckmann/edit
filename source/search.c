@@ -121,7 +121,12 @@ again:
 			lastsize = strlen(cp);
 
             /* align the window scroll to matching text */
-            if (WndCol > ClientWidth(wnd)-1) {
+            if (lastsize < ClientWidth(wnd)-1) {
+                if (WndCol + lastsize > ClientWidth(wnd)-1) {
+                    wnd->wleft = wnd->CurrCol - (ClientWidth(wnd)-lastsize);
+                }
+            }
+            else if (WndCol > ClientWidth(wnd)-1) {
                 wnd->wleft = wnd->CurrCol;
             }
             if (wnd->CurrCol < wnd->wleft) {
