@@ -335,6 +335,8 @@ void RepaintBorder(WINDOW wnd, RECT *rcc)
     }
     line[WindowWidth(wnd)] = '\0';
 
+    hide_mousecursor_in_rect(WindowRect(wnd));
+    ui_update++;
 
     /* ---------- window title ------------ */
     if (TestAttribute(wnd, HASTITLEBAR))
@@ -416,6 +418,9 @@ void RepaintBorder(WINDOW wnd, RECT *rcc)
     if (RectBottom(rc) == WindowHeight(wnd))
         /* ---------- bottom shadow ------------- */
         shadowline(wnd, rc);
+
+    ui_update--;
+    show_mousecursor();
 }
 
 static void TopLine(WINDOW wnd, int lin, RECT rc)

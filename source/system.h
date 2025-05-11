@@ -93,6 +93,7 @@ void SwapCursorStack(void);
 /* Call get_videomode before using these two: */
 extern unsigned video_mode;
 extern unsigned video_page;
+extern int ui_update;
 
 void clearscreen(void);
 void get_videomode(void);

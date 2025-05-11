@@ -6,6 +6,7 @@
 static union REGS regs;
 static struct SREGS sregs;
 
+int ui_update = 0;
 
 static void near mouse(int m1,int m2,int m3,int m4)
 {
@@ -60,7 +61,7 @@ void get_mouseposition(int *x, int *y)
 /* -------- position the mouse cursor -------- */
 void set_mouseposition(int x, int y)
 {
-    if (mouse_installed())	{
+    if (mouse_installed() && !ui_update)	{
 		segread(&sregs);
 		if (SCREENWIDTH == 40)
 			x *= 2;
@@ -72,28 +73,32 @@ void set_mouseposition(int x, int y)
 void show_mousecursor(void)
 {
     if (mouse_installed())	{
-		segread(&sregs);
-        mouse(1,0,0,0);
+    	if (!ui_update) {
+			segread(&sregs);
+    	    mouse(1,0,0,0);
+    	}
 	}
 }
 
 /* --------- hide the mouse cursor ------- */
 void hide_mousecursor(void)
 {
-    if (mouse_installed())	{
+    if (mouse_installed() && !ui_update)	{
 		segread(&sregs);
-        mouse(2,0,0,0);
+    	mouse(2,0,0,0);
 	}
 }
 
 void hide_mousecursor_in_rect(RECT rc)
 {
-	regs.x.ax = 0x10;
-    regs.x.cx = rc.lf*8;
-    regs.x.dx = rc.tp*8;
-    regs.x.si = rc.rt*8+7;
-    regs.x.di = rc.bt*8+7;
-    int86x(MOUSE, &regs, &regs, &sregs);
+	if (mouse_installed() && !ui_update) {
+		regs.x.ax = 0x10;
+    	regs.x.cx = rc.lf*8;
+    	regs.x.dx = rc.tp*8;
+    	regs.x.si = rc.rt*8+7;
+    	regs.x.di = rc.bt*8+7;
+    	int86x(MOUSE, &regs, &regs, &sregs);
+	}
 }
 
 /* --- return true if a mouse button has been released --- */
