@@ -114,5 +114,11 @@ typedef struct fblock { struct ffblk ff; } FBLOCK;
 
 #endif
 
+#ifdef __GNUC__
+
+#define MAXPATH 1024
+
+#endif
+
 #endif
 

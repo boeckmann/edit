@@ -23,12 +23,14 @@ void BuildFileName(char *path, const char *fn, const char *ext)
 {
     char *cp = path;
 
+#ifndef NOGLOBALARGV
     strcpy(path, __argv[0]);
     cp = strrchr(path, '\\');
     if (cp == NULL)
         cp = path;
     else 
         cp++;
+#endif
     strcpy(cp, fn);
     strcat(cp, ext);
 }
@@ -39,7 +41,7 @@ FILE *OpenHelpFile(const char *fn, const char *md)
 {
     /* char *cp; */
     s16 treect, i;
-    char helpname[_MAX_PATH];
+    char helpname[MAXPATH];
 
     /* -------- get the name of the help file ---------- */
     BuildFileName(helpname, fn, ".hlp");

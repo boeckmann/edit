@@ -10,6 +10,7 @@ CFLAGS += -os
 
 !ifdef __UNIX__
 HOST_CL=cc
+HOST_CL_FLAGS=-DNOGLOBALARGV
 REL_PATH=./
 !else
 HOST_CL=owcc
