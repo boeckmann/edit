@@ -5,7 +5,7 @@ CFLAGS=-q -ml
 !ifdef DEBUG
 CFLAGS += -d2
 !else
-CFLAGS += -os
+CFLAGS += -ox
 !endif
 
 !ifdef __UNIX__
