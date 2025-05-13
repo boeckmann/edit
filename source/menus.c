@@ -52,7 +52,7 @@ DEFMENU(MainMenu)
         SELECTION( "Cl~ear",     ID_CLEAR, 0,         INACTIVE)
         SELECTION( "~Delete",    ID_DELETETEXT, DEL,  INACTIVE)
         SEPARATOR
-        SELECTION( "Pa~ragraph", ID_PARAGRAPH,  ALT_P,INACTIVE)
+        SELECTION( "Pa~ragraph", ID_PARAGRAPH,  CTRL_R,INACTIVE)
         /* new 0.7d stuff follows: */
         SELECTION( "Upc~ase Block", ID_UPCASE, 0,     INACTIVE)
         SELECTION( "Do~wncase Block", ID_DOWNCASE, 0, INACTIVE)
