@@ -234,6 +234,23 @@ static int HorizPageMsg(WINDOW wnd, PARAM p1)
     SendMessage(wnd, KEYBOARD_CURSOR, WndCol, wnd->WndRow);
     return rtn;
 }
+
+
+int LineLen(const char *line)
+{
+    int len;
+    char *nl;
+
+    if (line == NULL) return 0;
+    if (*line == '\0') return 0;
+
+    nl = strchr(line, '\n');
+    if (nl) {
+        return nl-line;
+    }
+    return strlen(line);
+}
+
 /* ----- Extend the marked block to the new x,y position ---- */
 static void ExtendBlock(WINDOW wnd, int x, int y)
 {
@@ -241,7 +258,7 @@ static void ExtendBlock(WINDOW wnd, int x, int y)
     int ptop = min(wnd->BlkBegLine, wnd->BlkEndLine);
     int pbot = max(wnd->BlkBegLine, wnd->BlkEndLine);
     char *lp = TextLine(wnd, wnd->wtop+y);
-    int len = (int) (strchr(lp, '\n') - lp);
+    int len = LineLen(lp);
     x = max(0, min(x, len));
 	y = max(0, y);
     wnd->BlkEndCol = min(len, x+wnd->wleft);
@@ -260,6 +277,8 @@ static void ExtendBlock(WINDOW wnd, int x, int y)
         --pbot;
     }
 }
+
+
 /* ----------- LEFT_BUTTON Message ---------- */
 static int LeftButtonMsg(WINDOW wnd, PARAM p1, PARAM p2)
 {
@@ -267,7 +286,7 @@ static int LeftButtonMsg(WINDOW wnd, PARAM p1, PARAM p2)
     int MouseY = (int) p2 - GetClientTop(wnd);
     RECT rc = ClientRect(wnd);
     char *lp;
-    int len;
+    int len = 0;
     if (KeyBoardMarking)
         return TRUE;
     if (WindowMoving || WindowSizing)
@@ -303,7 +322,7 @@ static int LeftButtonMsg(WINDOW wnd, PARAM p1, PARAM p2)
         if (MouseY > wnd->wlines-1)
             return TRUE;
         lp = TextLine(wnd, MouseY+wnd->wtop);
-        len = (int) (strchr(lp, '\n') - lp);
+        len = LineLen(lp);
         MouseX = min(MouseX, len);
         if (MouseX < wnd->wleft)    {
             MouseX = 0;
@@ -320,7 +339,7 @@ static int LeftButtonMsg(WINDOW wnd, PARAM p1, PARAM p2)
 
     if (isMultiLine(wnd) ||
         (!TextBlockMarked(wnd)
-            && MouseX+wnd->wleft < strlen(wnd->text)))
+            && MouseX+wnd->wleft <= len))
         wnd->CurrCol = MouseX+wnd->wleft;
     SendMessage(wnd, KEYBOARD_CURSOR, WndCol, wnd->WndRow);
     return TRUE;
