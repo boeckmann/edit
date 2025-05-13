@@ -238,7 +238,6 @@ static int HorizPageMsg(WINDOW wnd, PARAM p1)
 
 int LineLen(const char *line)
 {
-    int len;
     char *nl;
 
     if (line == NULL) return 0;
