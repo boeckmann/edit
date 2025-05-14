@@ -87,6 +87,8 @@ struct keys keys[] = {
     {ALT_Y,      "Alt+Y"},
     {ALT_Z,      "Alt+Z"},
     {CTRL_C,     "Ctrl+C"},
+    {CTRL_F,     "Ctrl+F"},
+    {CTRL_R,     "Ctrl+R"},
     {CTRL_V,     "Ctrl+V"},
     {CTRL_X,     "Ctrl+X"},
 /* new 0.7c - note that this has to be the non-numpad style alt-digit... */

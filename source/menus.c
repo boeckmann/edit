@@ -63,8 +63,9 @@ DEFMENU(MainMenu)
     POPDOWN( "~Search", PrepSearchMenu, "Search and replace text" )
         SELECTION( "~Find", ID_SEARCH,      CTRL_F,    INACTIVE)
                         /* *** CTRL_F added 0.7c, see also editbox.c *** */
-        SELECTION( "~Next",      ID_SEARCHNEXT,  F3,   INACTIVE)
         SELECTION( "~Replace",ID_REPLACE,     0,    INACTIVE)
+        SEPARATOR
+        SELECTION( "~Next",      ID_SEARCHNEXT,  F3,   INACTIVE)
     ENDPOPDOWN
 
     /* ------------ the Utilities popdown menu --------------- */
@@ -119,7 +120,7 @@ DEFMENU(MainMenu)
         SELECTION(  "Help ~index...",     ID_HELPINDEX, 0, 0 )
         SEPARATOR
         SELECTION(  "~About Edit...",          ID_ABOUT,     0, 0 )
-        SELECTION(  "~About DFlat+...",          ID_ABOUTDFP,     0, 0 )
+        SELECTION(  "A~bout DFlat+...",          ID_ABOUTDFP,     0, 0 )
     ENDPOPDOWN
 
         /* ----- cascaded pulldown from Tabs... above ----- */
