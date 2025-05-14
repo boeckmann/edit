@@ -428,7 +428,7 @@ static void near collect_events(void)
                 timesep, now->tm_sec,
                 ((now->tm_hour > 11) ? "pm " : "am ") );
             } else
-              sprintf(time_string, "%2d%c%02d%c%02d  ", hr, timesep, now->tm_min,
+              sprintf(time_string, " %2d%c%02d%c%02d  ", hr, timesep, now->tm_min,
                 timesep, now->tm_sec);
                 /* min / sec use 02 digits, only 0.6 had 2 digits ' ' padded hours */
             /* -------- reset the timer -------- */
