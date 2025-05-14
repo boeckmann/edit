@@ -378,7 +378,7 @@ int PopDownProc(WINDOW wnd, MESSAGE msg, PARAM p1, PARAM p2)
             				    SendMessage(wnd, LB_CHOOSE, wnd->selection, 0);
     				}  
                     SendMessage(wnd->PrevClock, msg, p1, p2);
-    				break;  
+    				return TRUE;  
 					/* With SmoothMenus, no longer need to do anything special with LEFT_BUTTON */
 /*        case LEFT_BUTTON:
             LeftButtonMsg(wnd, p1, p2);
