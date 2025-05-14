@@ -408,12 +408,12 @@ static void BuildHelpBox(WINDOW wnd)
     strcpy(HelpBox.dwnd.title, hline);
     /* ----- set the height and width ----- */
     HelpBox.dwnd.h = min(ThisHelp->hheight, MAXHEIGHT)+7;
-    HelpBox.dwnd.w = max(45, ThisHelp->hwidth+6);
+    HelpBox.dwnd.w = min(SCREENWIDTH-2,max(45, ThisHelp->hwidth+6));
     /* ------ position the help window ----- */
 	if (wnd != NULL)
 	    BestFit(wnd, &HelpBox.dwnd);
     /* ------- position the command buttons ------ */
-    HelpBox.ctl[0].dwnd.w = max(40, ThisHelp->hwidth+2);
+    HelpBox.ctl[0].dwnd.w = min(SCREENWIDTH-6, max(39, ThisHelp->hwidth+2));
     HelpBox.ctl[0].dwnd.h =
                 min(ThisHelp->hheight, MAXHEIGHT)+2;
     offset = (HelpBox.dwnd.w-40) / 2;
