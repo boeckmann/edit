@@ -120,7 +120,7 @@ DEFMENU(MainMenu)
         SELECTION(  "Help ~index...",     ID_HELPINDEX, 0, 0 )
         SEPARATOR
         SELECTION(  "~About Edit...",          ID_ABOUT,     0, 0 )
-        SELECTION(  "A~bout DFlat+...",          ID_ABOUTDFP,     0, 0 )
+        SELECTION(  "About ~DFlat...",          ID_ABOUTDFP,     0, 0 )
     ENDPOPDOWN
 
         /* ----- cascaded pulldown from Tabs... above ----- */
