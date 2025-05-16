@@ -20,10 +20,6 @@ int main(int argc, char *argv[])
 		int ExitCode=0;
         int mx, my;
 
-		/* Intro message */
-    printf("%s (%i.%i.%i.%i)\n", ProgramModule.Description,ProgramModule.Ver_maj,ProgramModule.Ver_min,ProgramModule.Ver_rel,ProgramModule.Ver_patch);
-		printf("(based on FreeDOS DFlat+ %i.%i application framework)\n", DFlatpModule.Ver_maj,DFlatpModule.Ver_min);
-
 	  /* Prepare initial configuration */
    	SelectColorScheme (color);			/* Color Scheme */
 

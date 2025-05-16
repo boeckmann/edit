@@ -248,9 +248,8 @@ void ExecuteNonDFP (char *CmdLine)
     if (ScreenHeight != SCREENHEIGHT)
         SetScreenHeight(ScreenHeight);
     SendMessage(NULL, HIDE_MOUSE, 0, 0);
-    printf("Type EXIT to return to %s (%i.%i.%i.%i) (based on DFlat+ %i.%i).\n", 
-           ProgramModule.Description,ProgramModule.Ver_maj,ProgramModule.Ver_min,ProgramModule.Ver_rel,ProgramModule.Ver_patch, 
-           DFlatpModule.Ver_maj,DFlatpModule.Ver_min);
+    printf("Type EXIT to return to %s.\n", 
+           ProgramModule.Description);
     fflush(stdout);
     spawnl(P_WAIT, CmdLine, NULL);
     if (SCREENHEIGHT != SysConfig.VideoCurrentResolution.VRes)

@@ -171,9 +171,9 @@ int DfpMain(int argc, char *argv[])
     /* (LoadConfig was called at this place in pre-0.7b versions) */
 
     if (cfg.ReadOnlyMode)
-    		sprintf (WindowTitle, "EDIT (viewer mode)");
+    		sprintf (WindowTitle, "FreeDOS EDIT [viewer]");
     else
-    		sprintf (WindowTitle, "EDIT");
+    		sprintf (WindowTitle, "FreeDOS EDIT");
     		
     
     EditApplication = CreateWindow(APPLICATION, WindowTitle, 0, 0, -1, -1,
