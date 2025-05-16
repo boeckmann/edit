@@ -829,6 +829,8 @@ void Cooperate(void)
 BOOL dispatch_message(void)
 {
     WINDOW Mwnd, Kwnd;
+    static int no_multiplex_int = 0;
+
     /* -------- collect mouse and keyboard events ------- */
     collect_events();
 
@@ -836,10 +838,16 @@ BOOL dispatch_message(void)
     /* can fill the message queue. Events come from user or clock. */
     if ( (EventQueueCtr == 0) && (MsgQueueCtr == 0) &&
         (handshaking == 0) ) {	/* BORED - new 0.7c */
-        union REGS r;
-#if 0				/* int 2f is often quite crowded */
-        r.x.ax = 0x1680;	/* release multitasker timeslice */
-        int86(0x2f, &r, &r);	/* multiplexer call */
+        union REGPACK r;
+#if 1				/* int 2f is often quite crowded */
+        if (!no_multiplex_int) {
+            r.w.ax = 0x1680;    /* release multitasker timeslice */
+            intr(0x2f, &r); /* multiplexer call */
+            no_multiplex_int = r.h.al;
+        }
+        else {
+            cpu_hlt();
+        }
 #else
         r.h.ah = 0x84;		/* "network" idle call */
         int86(0x2a, &r, &r);	/* network interfaces */

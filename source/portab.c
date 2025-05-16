@@ -41,4 +41,14 @@ void  SetControlBreakHandler(int (*fptr)())
 
 #endif
 
+
+void cpu_hlt(void) {
+        __asm {
+                pushf
+                sti
+                hlt
+                popf
+        };
+}
+
 #endif

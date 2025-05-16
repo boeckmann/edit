@@ -120,5 +120,7 @@ typedef struct fblock { struct ffblk ff; } FBLOCK;
 
 #endif
 
+void cpu_hlt(void);
+
 #endif
 
