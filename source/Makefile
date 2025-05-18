@@ -81,6 +81,9 @@ all: edit.exe edit.hlp
 
 edit.exe: $(objs) edit.lnk Makefile
 	wlink @edit.lnk
+!ifdef UPX
+	upx --8086 --best edit.exe
+!endif
 
 edit.hlp: huffc.exe fixhelp.exe
 	$(REL_PATH)huffc.exe edit.txt edit.hlp
