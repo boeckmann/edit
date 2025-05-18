@@ -67,7 +67,6 @@ static void SearchTextBox(WINDOW wnd, int incr)
     if (Replacing && CheckBoxSetting(&ReplaceTextDB, ID_REPLACEALL)) {
         wnd->CurrCol = 0;
         wnd->CurrLine = 0;
-        wnd->WndRow = wnd->CurrLine - wnd->wtop;
         fromBeginning = 1;        
     }
 
@@ -115,7 +114,6 @@ again:
             /* position the cursor at the matching text */
             wnd->CurrCol = wnd->BlkBegCol;
             wnd->CurrLine = wnd->BlkBegLine;
-            wnd->WndRow = wnd->CurrLine - wnd->wtop;
 
 			/* -- remember the size of the matching text -- */
 			lastsize = strlen(cp);
@@ -132,10 +130,9 @@ again:
             if (wnd->CurrCol < wnd->wleft) {
                 wnd->wleft = wnd->CurrCol;
             }
-            if (wnd->WndRow != ClientHeight(wnd)-1)    {
-                wnd->wtop = wnd->CurrLine;
-                wnd->WndRow = 0;
-            }
+
+            wnd->wtop = min(max(wnd->CurrLine - 7, 0), wnd->wlines - ClientHeight(wnd));
+            wnd->WndRow = wnd->CurrLine - wnd->wtop;
 
             SendMessage(wnd, PAINT, 0, 0);
             SendMessage(wnd, KEYBOARD_CURSOR,
@@ -162,9 +159,6 @@ again:
         if (YesNoBox("End reached. Start from beginning?")) {
             wnd->CurrCol = 0;
             wnd->CurrLine = 0;
-            wnd->WndRow = wnd->CurrLine - wnd->wtop;
-            SendMessage(wnd, KEYBOARD_CURSOR,
-                WndCol, wnd->WndRow);
             fromBeginning = 1;
             rpl = TRUE;
             incr = FALSE;
@@ -179,9 +173,6 @@ again:
         MessageBox("Search", "No matching text found");
         wnd->CurrCol = OrigCol;
         wnd->CurrLine = OrigLine;
-        wnd->WndRow = wnd->CurrLine - wnd->wtop;
-        SendMessage(wnd, KEYBOARD_CURSOR,
-            WndCol, wnd->WndRow);
     }
 }
 
