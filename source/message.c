@@ -213,7 +213,7 @@ static void interrupt far newcrit(union INTPACK r)
            r.h.al + 'A'; /* ... patch drive letter into message */
         CriticalError = TRUE;    /* ... only then we have a crit. error */
     }
-    r.w.ax = 0;
+    r.w.ax = 3; /* make operation fail! */
 }
 #endif
 
@@ -227,7 +227,7 @@ static void interrupt far newcrit(IREGS ir)
            (ir.ax & 0xff) + 'A'; /* ... patch drive letter into message */
         CriticalError = TRUE;    /* ... only then we have a crit. error */
     }
-    ir.ax = 0;
+    ir.ax = 3; /* make operation fail! */
 }
 #endif
 
