@@ -72,15 +72,10 @@ unsigned Xbioskey(int cmd)
 #ifdef __WATCOMC__
 unsigned Xbioskey(int cmd)
 {
-    static int keybase = -1;
     union REGPACK r;
-    if (keybase < 0) {
-        volatile char far *kbtype = MK_FP(0x40,0x96); /* BIOS data flag */
-        keybase = ( ((*kbtype) & 0x10) != 0 ) ? 0x10 : 0;
-        /* 0 for 84 key XT mode, 0x10 for 102 key AT mode. */
-        /* (0x20 for 122 key mode, which is not used here) */
-    }
-    r.h.ah = (char) (keybase + cmd);
+    char kbdtype = *(unsigned char __far *)MK_FP(0x40,0x96) & 0x10;
+
+    r.h.ah = (char) (kbdtype + cmd);
     r.h.al = 0;
     intr(0x16, &r);
 
@@ -157,14 +152,9 @@ unsigned getkey(void)
 /* ---------- read the keyboard shift status --------- */
 unsigned getshift(void)
 {
-    static int enhkeyb = -1; /* 1 for an enhanced keyboard */
-    static char far *kbtype = MK_FP(0x40,0x96);
-	/* new check method (10/2003) */
-    if (enhkeyb == -1) { /* if we do not yet know... */
-	enhkeyb = (((*kbtype) & 0x10) != 0) ? 1 : 0; /* read BIOS data flag! */
-    } /* now enhkeyb is either 0 or 1 - Eric */
+    char kbdtype = *(unsigned char __far *)MK_FP(0x40,0x96) & 0x10;
 
-    if (!enhkeyb) { /* old/new by Eric */
+    if (!kbdtype) { /* old/new by Eric */
 
         regs.h.ah = 2;
         int86(KEYBRD, &regs, &regs);
