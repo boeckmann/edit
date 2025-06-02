@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 {
 	
 		int ExitCode=0;
-        int mx, my;
 
 	  /* Prepare initial configuration */
    	SelectColorScheme (color);			/* Color Scheme */
@@ -73,9 +72,6 @@ int main(int argc, char *argv[])
         return (-1);
     }
   
-    /* initialize mouse */
-    get_mouseposition(&mx, &my);
-
     /* -- Here runs the main application --*/
     
     ExitCode = DfpMain (argc, argv);

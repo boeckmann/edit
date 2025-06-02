@@ -176,6 +176,8 @@ int DfpMain(int argc, char *argv[])
     		sprintf (WindowTitle, "FreeDOS EDIT");
     		
     
+    set_mouseposition(0, 0);
+    
     EditApplication = CreateWindow(APPLICATION, WindowTitle, 0, 0, -1, -1,
             &MainMenu, NULL, MemoPadProc, (int)(HASSTATUSBAR));
 
